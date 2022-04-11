@@ -70,3 +70,11 @@ SELECT last_name , first_name * FROM employees WHERE last_name LIKE 'B%'
 LIMIT:
 
 SELECT product_name, unit_price FROM products WHERE discontinued <> 1 ORDER BY unit_price ASC LIMIT 10 ;
+
+filter IS NULL:
+
+SELECT ship_country, ship_city, ship_region FROM orders WHERE ship_region IS NULL ;
+
+filter IS NOT NULL:
+
+SELECT ship_country, ship_city, ship_region FROM orders WHERE ship_region IS NOT NULL ;
