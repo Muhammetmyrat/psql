@@ -1,0 +1,98 @@
+ Вы можете переключиться на учетную запись postgres на вашем сервере с помощью следующей команды:
+ sudo -i -u postgres
+ 
+ Теперь вы можете немедленно получить доступ к командной строке PostgresSQL с помощью следующей команды:
+ psql
+ 
+ Закройте командную строку PostgreSQL с помощью следующей команды:
+ \q
+ 
+ delete table  row:
+ delete from product_photo where id=1; 
+ 
+ update:
+ update product_photo set url='phone.jpg' where id=1;
+ 
+ ALTER DATABASE dbname OWNER TO new_owner;
+ 
+ ALTER TABLE public.table_name OWNER TO new_owner;
+ 
+ \? clear;
+
+ 
+ CREATE DATABASE testdb WITH OWNER = postgres ENCODING = 'UTF8' CONNECTION LIMIT = -1 ;
+ 
+ DISTINCT ->> IKI GAYTALANYAN SETIRLERI BIRIKDIRYAR MESELEM:  SELECT DISTINCT city FROM  table; //
+ 
+ COUNT() ->> SUTUNDAKI SETIRLERIN SANYNY CYKARYAR MESELEM: SELECT COUNT(*) FROM table; // 20
+ 
+ SELECT COUNT(DISTINCT country) FROM db_name; //
+ 
+ logiceskiye operatory:
+ 
+ SELECT * FROM table WHERE condition1 AND conditon2;
+ SELECT * FROM table WHERE condition1 OR conditon2;
+ SELECT * FROM table WHERE condition1 AND conditon2 AND conditon3;
+ Meselem:
+ 
+ SELECT * FROM table WHERE condition1 >= 20 AND  condition2 <= 40 ; //
+ the same:
+ SELECT * FROM table WHERE freight BETWEEN  20 AND 40; //
+ 
+ SELECT * FROM table WHERE country = 'Mexico' OR  country = 'USA' OR  country = 'Canada' OR  country = 'Germany' ;
+ the same:
+ SELECT * FROM table WHERE country IN ('Mexico', 'USA', 'Canada', 'Germany');
+ otrisaniya:
+ SELECT * FROM table WHERE country NOT IN ('Mexico', 'USA', 'Canada', 'Germany');
+ 
+ Sortirowka:
+ SELECT country FROM customers ORDER BY country ASC; // A-Z
+ SELECT country FROM customers ORDER BY country DESC; // Z-A
+ SELECT country, sity FROM customers ORDER BY country ASC, sity ASC; // A-Z
+
+ MAX, MIN, AVG, SUM;
+
+ SELECT MIN(unit_price) FROM products WHERE units_in_stock > 30 ;
+ 
+ SELECT MAX(unit_in_stock) FROM products WHERE unit_price > 30;
+ 
+ SELECT AVG(shipped_date - order_date) FROM orders WHERE ship_country =  'USA' ;
+ 
+ SELECT SUM(unit_price*units_in_stock) FROM products WHERE discontinued <> 1 ;
+
+
+ Pattern matching with LIKE:
+
+ SELECT last_name , first_name * FROM employees WHERE first_name LIKE '%n'
+ 
+ SELECT last_name , first_name * FROM employees WHERE last_name LIKE 'B%'
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
