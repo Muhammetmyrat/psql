@@ -58,7 +58,7 @@ SELECT MAX(unit_in_stock) FROM products WHERE unit_price > 30;
 
 SELECT AVG(shipped_date - order_date) FROM orders WHERE ship_country =  'USA' ;
 
-SELECT SUM(unit_price*units_in_stock) FROM products WHERE discontinued <> 1 ;
+SELECT SUM(unit_price * units_in_stock) FROM products WHERE discontinued <> 1 ;
 
 
 Pattern matching with LIKE:
@@ -66,3 +66,7 @@ Pattern matching with LIKE:
 SELECT last_name , first_name * FROM employees WHERE first_name LIKE '%n'
 
 SELECT last_name , first_name * FROM employees WHERE last_name LIKE 'B%'
+
+LIMIT:
+
+SELECT product_name, unit_price FROM products WHERE discontinued <> 1 ORDER BY unit_price ASC LIMIT 10 ;
