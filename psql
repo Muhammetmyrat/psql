@@ -87,3 +87,7 @@ SELECT ship_country, COUNT(*) FROM orders WHERE freight > 50 GROUP BY ship_count
 SELECT category_id, SUM(units_in_stock) as sum_in_stock  FROM products GROUP BY category_id ORDER BY SUM(units_in_stock) LIMIT 10;
 
 SELECT json_agg(product_name), category_id, SUM(units_in_stock) as sum_in_stock FROM products GROUP BY category_id ORDER BY SUM(units_in_stock) LIMIT 10;
+
+--> HAVING : after GROUP BY before ORDER BY ;
+
+SELECT category_id, SUM(unit_price * units_in_stock) from products WHERE discontinued <> 1 GROUP BY category_id HAVING SUM(unit_price * units_in_stock) > 6000 ORDER BY SUM(unit_price * units_in_stock) DESC;
