@@ -97,3 +97,9 @@ SELECT category_id, SUM(unit_price * units_in_stock) from products WHERE discont
 SELECT country FROM customers UNION SELECT country FROM employees ;
 
 SELECT country FROM customers UNION ALL SELECT country FROM employees ;
+
+--> INTERSECT, INTERSECT ALL: пересечения;
+
+SELECT country FROM customers INTERSECT SELECT country FROM suppliers ;
+
+SELECT country FROM customers INTERSECT ALL SELECT country FROM suppliers ;
