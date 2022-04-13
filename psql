@@ -91,3 +91,9 @@ SELECT json_agg(product_name), category_id, SUM(units_in_stock) as sum_in_stock 
 --> HAVING : after GROUP BY before ORDER BY ;
 
 SELECT category_id, SUM(unit_price * units_in_stock) from products WHERE discontinued <> 1 GROUP BY category_id HAVING SUM(unit_price * units_in_stock) > 6000 ORDER BY SUM(unit_price * units_in_stock) DESC;
+
+--> UNION, UNION ALL:  объединение;
+
+SELECT country FROM customers UNION SELECT country FROM employees ;
+
+SELECT country FROM customers UNION ALL SELECT country FROM employees ;
