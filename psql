@@ -103,3 +103,8 @@ SELECT country FROM customers UNION ALL SELECT country FROM employees ;
 SELECT country FROM customers INTERSECT SELECT country FROM suppliers ;
 
 SELECT country FROM customers INTERSECT ALL SELECT country FROM suppliers ;
+
+--> EXCEPT : исключение;
+
+SELECT country FROM customers EXCEPT SELECT country FROM suppliers ;
+
