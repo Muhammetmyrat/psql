@@ -108,3 +108,6 @@ SELECT country FROM customers INTERSECT ALL SELECT country FROM suppliers ;
 
 SELECT country FROM customers EXCEPT SELECT country FROM suppliers ;
 
+--> INNER JOIN :
+
+SELECT product_name, units_in_stock from products INNER JOIN suppliers ON products.supplier_id = suppliers.supplier_id ORDER BY units_in_stock DESC;
