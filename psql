@@ -110,4 +110,6 @@ SELECT country FROM customers EXCEPT SELECT country FROM suppliers ;
 
 --> INNER JOIN :
 
-SELECT product_name, units_in_stock from products INNER JOIN suppliers ON products.supplier_id = suppliers.supplier_id ORDER BY units_in_stock DESC;
+SELECT product_name, units_in_stock from products INNER JOIN suppliers ON products.supplier_id = suppliers.supplier_id ORDER BY units_in_stock DESC ;
+
+SELECT category_name, SUM(units_in_stock ) from products INNER JOIN categories ON products.category_id = categories.category_id GROUP BY category_name HAVING SUM(units_in_stock ) > 500 ORDER BY SUM(units_in_stock ) DESC ;
