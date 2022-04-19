@@ -137,3 +137,10 @@ INSERT INTO employee (first_name, last_name, manager_id) VALUES ('Ilon', 'Musk',
 SELECT e.first_name || ' ' || e.last_name AS employee,
 			 m.first_name || ' ' || m.last_name AS manager
 FROM 	employee e LEFT JOIN employee m ON m.manager_id = e.employee_id ;
+
+-- > USING() :
+
+SELECT last_name, order_id from employees LEFT JOIN orders USING(employee_id) ;
+
+
+
