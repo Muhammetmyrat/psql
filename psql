@@ -121,3 +121,17 @@ SELECT company_name, order_id from customers LEFT JOIN orders ON orders.customer
 SELECT last_name, order_id from employees LEFT JOIN orders ON orders.employee_id = employees.employee_id ;
 
 SELECT COUNT(*) as sum from employees LEFT JOIN orders ON orders.employee_id = employees.employee_id  WHERE order_id IS NULL;
+
+
+--> SELF JOIN :
+
+CREATE TABLE employee(
+	employee_id SERIAL PRIMARY KEY,
+	first_name VARCHAR(255) NOT NULL,
+	last_name VARCHAR(255) NOT NULL,
+	manager_id INTEGER REFERENCES employee(employee_id)
+) ;
+
+INSERT INTO employee (first_name, last_name, manager_id) VALUES ('Ilon', 'Musk', NULL), ('Jeff', 'Bezoss', 1), ('Varn', 'Baffet', 2), ('Stif', 'Jobs', NULL), ('Mark', 'Zukerberg', 4);
+
+
