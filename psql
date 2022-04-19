@@ -117,3 +117,7 @@ SELECT category_name, SUM(units_in_stock ) from products INNER JOIN categories O
 --> LEFT JOIN :
 
 SELECT company_name, order_id from customers LEFT JOIN orders ON orders.customer_id = customers.customer_id WHERE order_id IS NULL;
+
+SELECT last_name, order_id from employees LEFT JOIN orders ON orders.employee_id = employees.employee_id ;
+
+SELECT COUNT(*) as sum from employees LEFT JOIN orders ON orders.employee_id = employees.employee_id  WHERE order_id IS NULL;
