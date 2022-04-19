@@ -145,7 +145,7 @@ SELECT last_name, order_id from employees LEFT JOIN orders USING(employee_id) ;
 --> NATURAL JOIN :
 
 SELECT product_name, units_in_stock from products INNER JOIN suppliers ON products.supplier_id = suppliers.supplier_id ORDER BY units_in_stock DESC ;
---> the same:
+--> the same: <<BUT DANGER>>
 SELECT product_name, units_in_stock from products NATURAL JOIN suppliers ORDER BY units_in_stock DESC LIMIT 10;
 
 
