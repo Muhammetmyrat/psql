@@ -134,4 +134,6 @@ CREATE TABLE employee(
 
 INSERT INTO employee (first_name, last_name, manager_id) VALUES ('Ilon', 'Musk', NULL), ('Jeff', 'Bezoss', 1), ('Varn', 'Baffet', 2), ('Stif', 'Jobs', NULL), ('Mark', 'Zukerberg', 4);
 
-
+SELECT e.first_name || ' ' || e.last_name AS employee,
+			 m.first_name || ' ' || m.last_name AS manager
+FROM 	employee e LEFT JOIN employee m ON m.manager_id = e.employee_id ;
