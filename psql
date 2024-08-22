@@ -1,181 +1,68 @@
---> Вы можете переключиться на учетную запись postgres на вашем сервере с помощью следующей команды:
-sudo -i -u postgres
-
---> Теперь вы можете немедленно получить доступ к командной строке PostgresSQL с помощью следующей команды:
-psql
-
---> Закройте командную строку PostgreSQL с помощью следующей команды:
-\q
-
---> delete table  row:
-delete from product_photo where id=1;
-
---> update:
-update product_photo set url='phone.jpg' where id=1;
-
-ALTER DATABASE dbname OWNER TO new_owner;
-
-ALTER TABLE public.table_name OWNER TO new_owner;
-
-\? clear;
-
-
-CREATE DATABASE testdb WITH OWNER = postgres ENCODING = 'UTF8' CONNECTION LIMIT = -1 ;
-
---> DISTINCT ->> CONNECTING TWO REPEATED LINES, for example:  SELECT DISTINCT city FROM  table; //
-
---> COUNT() ->> INCLUDES THE NUMBER OF Rows, for example:: SELECT COUNT(*) FROM table; // 20
-
-SELECT COUNT(DISTINCT country) FROM db_name; //
-
---> logiceskiye operatory:
-
-SELECT * FROM table WHERE condition1 AND conditon2;
-SELECT * FROM table WHERE condition1 OR conditon2;
-SELECT * FROM table WHERE condition1 AND conditon2 AND conditon3;
---> for example:
-
-SELECT * FROM table WHERE condition1 >= 20 AND  condition2 <= 40 ; //
---> the same:
-SELECT * FROM table WHERE freight BETWEEN  20 AND 40; //
-
-SELECT * FROM table WHERE country = 'Mexico' OR  country = 'USA' OR  country = 'Canada' OR  country = 'Germany' ;
---> the same:
-SELECT * FROM table WHERE country IN ('Mexico', 'USA', 'Canada', 'Germany');
---> otrisaniya:
-SELECT * FROM table WHERE country NOT IN ('Mexico', 'USA', 'Canada', 'Germany');
-
---> Sortirowka:
-
-SELECT country FROM customers ORDER BY country ASC; // A-Z
-SELECT country FROM customers ORDER BY country DESC; // Z-A
-SELECT country, sity FROM customers ORDER BY country ASC, sity ASC; // A-Z
-
---> MAX, MIN, AVG, SUM;
-
-SELECT MIN(unit_price) FROM products WHERE units_in_stock > 30 ;
-
-SELECT MAX(unit_in_stock) FROM products WHERE unit_price > 30;
-
-SELECT AVG(shipped_date - order_date) FROM orders WHERE ship_country =  'USA' ;
-
-SELECT SUM(unit_price * units_in_stock) FROM products WHERE discontinued <> 1 ;
-
-
---> Pattern matching with LIKE:
-
-SELECT last_name , first_name * FROM employees WHERE first_name LIKE '%n'
-
-SELECT last_name , first_name * FROM employees WHERE last_name LIKE 'B%'
-
---> LIMIT:
-
-SELECT product_name, unit_price FROM products WHERE discontinued <> 1 ORDER BY unit_price ASC LIMIT 10 ;
-
---> filter IS NULL:
-
-SELECT ship_country, ship_city, ship_region FROM orders WHERE ship_region IS NULL ;
-
---> filter IS NOT NULL:
-
-SELECT ship_country, ship_city, ship_region FROM orders WHERE ship_region IS NOT NULL ;
-
---> GROUP BY : between WHERE and ORDER BY:
-
-SELECT ship_country, COUNT(*) FROM orders WHERE freight > 50 GROUP BY ship_country ORDER BY COUNT(*) DESC;
-
-SELECT category_id, SUM(units_in_stock) as sum_in_stock  FROM products GROUP BY category_id ORDER BY SUM(units_in_stock) LIMIT 10;
-
-SELECT json_agg(product_name), category_id, SUM(units_in_stock) as sum_in_stock FROM products GROUP BY category_id ORDER BY SUM(units_in_stock) LIMIT 10;
-
---> HAVING : after GROUP BY before ORDER BY ;
-
-SELECT category_id, SUM(unit_price * units_in_stock) from products WHERE discontinued <> 1 GROUP BY category_id HAVING SUM(unit_price * units_in_stock) > 6000 ORDER BY SUM(unit_price * units_in_stock) DESC;
-
---> UNION, UNION ALL:  объединение;
-
-SELECT country FROM customers UNION SELECT country FROM employees ;
-
-SELECT country FROM customers UNION ALL SELECT country FROM employees ;
-
---> INTERSECT, INTERSECT ALL: пересечения;
-
-SELECT country FROM customers INTERSECT SELECT country FROM suppliers ;
-
-SELECT country FROM customers INTERSECT ALL SELECT country FROM suppliers ;
-
---> EXCEPT : исключение;
-
-SELECT country FROM customers EXCEPT SELECT country FROM suppliers ;
-
---> INNER JOIN :
-
-SELECT product_name, units_in_stock from products INNER JOIN suppliers ON products.supplier_id = suppliers.supplier_id ORDER BY units_in_stock DESC ;
-
-SELECT category_name, SUM(units_in_stock ) from products INNER JOIN categories ON products.category_id = categories.category_id GROUP BY category_name HAVING SUM(units_in_stock ) > 500 ORDER BY SUM(units_in_stock ) DESC ;
-
---> LEFT JOIN :
-
-SELECT company_name, order_id from customers LEFT JOIN orders ON orders.customer_id = customers.customer_id WHERE order_id IS NULL;
-
-SELECT last_name, order_id from employees LEFT JOIN orders ON orders.employee_id = employees.employee_id ;
-
-SELECT COUNT(*) as sum from employees LEFT JOIN orders ON orders.employee_id = employees.employee_id  WHERE order_id IS NULL;
-
-
---> SELF JOIN :
-
-CREATE TABLE employee(
-	employee_id SERIAL PRIMARY KEY,
-	first_name VARCHAR(255) NOT NULL,
-	last_name VARCHAR(255) NOT NULL,
-	manager_id INTEGER REFERENCES employee(employee_id)
-) ;
-
-INSERT INTO employee (first_name, last_name, manager_id) VALUES ('Ilon', 'Musk', NULL), ('Jeff', 'Bezoss', 1), ('Varn', 'Baffet', 2), ('Stif', 'Jobs', NULL), ('Mark', 'Zukerberg', 4);
-
-SELECT e.first_name || ' ' || e.last_name AS employee,
-			 m.first_name || ' ' || m.last_name AS manager
-FROM 	employee e LEFT JOIN employee m ON m.manager_id = e.employee_id ;
-
--- > USING() :
-
-SELECT last_name, order_id from employees LEFT JOIN orders USING(employee_id) ;
-
---> NATURAL JOIN :
-
-SELECT product_name, units_in_stock from products INNER JOIN suppliers ON products.supplier_id = suppliers.supplier_id ORDER BY units_in_stock DESC ;
---> the same: <<BUT DANGER>>
-SELECT product_name, units_in_stock from products NATURAL JOIN suppliers ORDER BY units_in_stock DESC LIMIT 10;
-
--->> CONCAT() :
-
-SELECT e.first_name || ' ' || e.last_name AS employee,
-			 m.first_name || ' ' || m.last_name AS manager
-FROM 	employee e LEFT JOIN employee m ON m.manager_id = e.employee_id ;
---> the same:
-SELECT CONCAT(e.first_name , ' ' , e.last_name) AS employee,
-			 CONCAT(e.first_name , ' ' , e.last_name) AS manager
-FROM 	employee e LEFT JOIN employee m ON m.manager_id = e.employee_id ;
-
---> subqueries (подзапросы) :
-
-SELECT company_name, country FROM suppliers WHERE country IN (SELECT DISTINCT country FROM customers) ;
-
-SELECT category_name, SUM(units_in_stock) FROM products INNER JOIN categories USING(category_id) GROUP BY category_name ORDER BY SUM(units_in_stock) DESC LIMIT (SELECT MIN(product_id) + 4 FROM products) ;
-
-SELECT product_name, units_in_stock FROM products WHERE units_in_stock > (SELECT AVG(units_in_stock) FROM products) ORDER BY units_in_stock ;
-
---> WHERE EXISTS (где существует) :
-
-SELECT company_name, contact_name FROM customers WHERE EXISTS (SELECT customer_id FROM orders WHERE customer_id = customers.customer_id AND freight BETWEEN 40 AND 70) ;
-
---> WHERE NOT EXISTS :
-
-SELECT company_name, contact_name FROM customers WHERE NOT EXISTS (SELECT customer_id FROM orders WHERE customer_id = customers.customer_id AND order_date BETWEEN '1995-02-01' AND '1995-02-15') ;
-
-SELECT product_name FROM products p WHERE NOT EXISTS (SELECT orders.order_id FROM orders JOIN order_details USING(order_id) WHERE order_details.product_id = p.product_id AND order_date BETWEEN '1995-02-01' AND '1995-02-15') ;
-
-
-
-
+ Вы можете переключиться на учетную запись postgres на вашем сервере с помощью следующей команды:
+ sudo -i -u postgres
+ 
+ Теперь вы можете немедленно получить доступ к командной строке PostgresSQL с помощью следующей команды:
+ psql
+ 
+ Закройте командную строку PostgreSQL с помощью следующей команды:
+ \q
+ 
+ delete table  row:
+ delete from product_photo where id=1; 
+ 
+ update:
+ update product_photo set url='phone.jpg' where id=1;
+ 
+ ALTER DATABASE dbname OWNER TO new_owner;
+ 
+ ALTER TABLE public.table_name OWNER TO new_owner;
+ 
+ \? clear;
+
+ 
+ CREATE DATABASE testdb WITH OWNER = postgres ENCODING = 'UTF8' CONNECTION LIMIT = -1 ;
+ 
+ DISTINCT ->> IKI GAYTALANYAN SETIRLERI BIRIKDIRYAR MESELEM:  SELECT DISTINCT city FROM  table; //
+ 
+ COUNT() ->> SUTUNDAKI SETIRLERIN SANYNY CYKARYAR MESELEM: SELECT COUNT(*) FROM table; // 20
+ 
+ SELECT COUNT(DISTINCT country) FROM db_name; //
+ 
+ logiceskiye operatory:
+ 
+ SELECT * FROM table WHERE condition1 AND conditon2;
+ SELECT * FROM table WHERE condition1 OR conditon2;
+ SELECT * FROM table WHERE condition1 AND conditon2 AND conditon3;
+ Meselem:
+ 
+ SELECT * FROM table WHERE condition1 >= 20 AND  condition2 <= 40 ; //
+ the same:
+ SELECT * FROM table WHERE freight BETWEEN  20 AND 40; //
+ 
+ SELECT * FROM table WHERE country = 'Mexico' OR  country = 'USA' OR  country = 'Canada' OR  country = 'Germany' ;
+ the same:
+ SELECT * FROM table WHERE country IN ('Mexico', 'USA', 'Canada', 'Germany');
+ otrisaniya:
+ SELECT * FROM table WHERE country NOT IN ('Mexico', 'USA', 'Canada', 'Germany');
+ 
+ Sortirowka:
+ SELECT country FROM customers ORDER BY country ASC; // A-Z
+ SELECT country FROM customers ORDER BY country DESC; // Z-A
+ SELECT country, sity FROM customers ORDER BY country ASC, sity ASC; // A-Z
+
+ MAX, MIN, AVG, SUM;
+
+ SELECT MIN(unit_price) FROM products WHERE units_in_stock > 30 ;
+ 
+ SELECT MAX(unit_in_stock) FROM products WHERE unit_price > 30;
+ 
+ SELECT AVG(shipped_date - order_date) FROM orders WHERE ship_country =  'USA' ;
+ 
+ SELECT SUM(unit_price*units_in_stock) FROM products WHERE discontinued <> 1 ;
+
+
+ Pattern matching with LIKE:
+
+ SELECT last_name , first_name * FROM employees WHERE first_name LIKE '%n'
+ 
+ SELECT last_name , first_name * FROM employees WHERE last_name LIKE 'B%'
